@@ -5,7 +5,7 @@ Seja bem vindo(a) à sétima Semana Javascript Expert. Este é o código inicial
 Marque esse projeto com uma estrela 🌟
 
 ## Preview
-O projeto pode ser testado nesse [link](https://makarioszen.github.io/semana-javascript-expert07)
+O projeto pode ser testado nesse [https://makarioszen.github.io/semana-javascript-expert07/](https://makarioszen.github.io/semana-javascript-expert07)
 
 ## Pre-reqs
 - Este projeto foi criado usando Node.js v19.6
