@@ -1,7 +1,11 @@
 export default class Controller {
     #view
     #worker
-    #blinkCounter = 0
+    #blinkCounter = {
+        left: 0,
+        right: 0,
+        both: 0
+    }
     #camera
 
 
@@ -30,10 +34,11 @@ export default class Controller {
             const { blinked } = data
             if (!blinked) return;
 
-            this.#blinkCounter ++
-            this.log('you blinked eyes')
-            this.#view.togglePlayVideo();
-            console.log('blinked', blinked);
+            this.#blinkCounter[blinked]++
+            this.log(`you blinked eye ${blinked}`)
+            if (blinked === 'both') {
+                this.#view.togglePlayVideo();
+            }
         }
         return {
             send(msg) {
@@ -55,7 +60,11 @@ export default class Controller {
 
     onBtnStart() {
         this.log('initializing detection ...')
-        this.#blinkCounter = 0
+        this.#blinkCounter = {
+            left: 0,
+            right: 0,
+            both: 0
+        }
         this.loop()
     }
 
