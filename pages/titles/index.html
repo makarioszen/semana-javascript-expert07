@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Streaming Service</title>
-  <link rel="stylesheet" href="./lib/index.css">
-
+  <link rel="stylesheet" href="./lib/index.css" />
 </head>
 
 <body id="body">
+  <canvas id="hands"></canvas>
   <div class="content">
     <div class="header">
       <div class="brand">
@@ -44,8 +44,10 @@
       <div class="image-container">
         <div class="left-side">
           <h1>Interstellar</h1>
-          <p>Follow a group of astronauts from the future through the cosmos in search of an earthly replacement, what
-            will happen next?</p>
+          <p>
+            Follow a group of astronauts from the future through the cosmos in
+            search of an earthly replacement, what will happen next?
+          </p>
           <div class="button-section">
             <div class="watch">
               <h3>Play</h3>
@@ -70,20 +72,18 @@
     <div class="mid">
       <div class="content-area" id="trending">
         <h2 class="content-title">TRENDING</h2>
-        <div class="default-carousel card-carousel">
-
-        </div>
+        <div class="default-carousel card-carousel"></div>
       </div>
       <div class="content-area" id="releases">
         <h2 class="content-title">NEW RELEASES</h2>
-        <div class="default-carousel card-carousel">
-
-        </div>
+        <div class="default-carousel card-carousel"></div>
       </div>
       <div class="search-area" id="search">
         <div class="search-area-content">
           <h2>Can't Find Anything You Like?</h2>
-          <p>Search for thousands of unique movies from our growing database...</p>
+          <p>
+            Search for thousands of unique movies from our growing database...
+          </p>
           <div class="input-area">
             <input id="inputSearch" type="text" placeholder="Search..." />
             <svg fill="currentColor" viewBox="0 0 16 16">
@@ -95,9 +95,7 @@
       </div>
       <div id="browseSearchArea" class="content-area">
         <h2 id="searchTitleBar" class="content-title">BROWSE SEARCH</h2>
-        <div id="browseSearch">
-
-        </div>
+        <div id="browseSearch"></div>
       </div>
     </div>
     <div class="bottom">
@@ -142,7 +140,10 @@
   </div>
 
   <div class="watch-later-modal">
-    <h3>Added <a href="#" class="movie"></a> to your <a href="#" class="playlist">WATCH LATER</a> playlist!</h3>
+    <h3>
+      Added <a href="#" class="movie"></a> to your
+      <a href="#" class="playlist">WATCH LATER</a> playlist!
+    </h3>
     <div class="side-buttons">
       <svg fill="currentColor" viewBox="0 0 16 16"
         onclick="alert('Removed item from the Watch Later playlist'); ToggleWatchLater('', false);">
