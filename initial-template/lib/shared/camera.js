@@ -24,13 +24,13 @@ export default class Camera {
         const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
         const camera = new Camera();
         camera.video.srcObject = stream;
-        camera.video.height = 240
-        camera.video.width = 320
+        // camera.video.height = 240
+        // camera.video.width = 320
+        // console.log('Add camera to body');
+        // document.body.append(camera.video)
 
-        document.body.append(camera.video)
-
-        await new Promise((resolve)=>{
-            camera.video.onloadedmetadata = ()=>{
+        await new Promise((resolve) => {
+            camera.video.onloadedmetadata = () => {
                 resolve(camera.video)
             }
         })
