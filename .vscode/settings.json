@@ -1,3 +1,8 @@
 {
+<<<<<<< HEAD
   "window.zoomLevel": 0
+=======
+  "window.zoomLevel": 0,
+  "SAP HANA Database Explorer.displaySapWebAnalyticsStartupNotification": false
+>>>>>>> bf3f9645096f6ccb5bbf37b070b068e32f2418fb
 }

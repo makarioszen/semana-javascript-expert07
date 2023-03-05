@@ -7,7 +7,7 @@ export default class CardsController {
     this.#service = service
   }
 
-  async #loadDB() {
+  async loadDB() {
     return this.#service.loadCards()
   }
 
@@ -23,24 +23,15 @@ export default class CardsController {
     this.#view.addCards(cards, this.#itemsPerLine)
   }
 
-  #onSearchInput(keyword) {
+  onSearchInput(keyword) {
     this.#view.clearCards()
-
-    console.log('activating blocking operation...')
-    console.time('blocking-op')
-    // blocking function
-    for (let counter = 0; counter < 1e5; counter++) console.log()
-    console.timeEnd('blocking-op')
-
-    console.log('blocking operation freed up ...')
-
     this.addCards(keyword)
   }
 
   async init() {
-    await this.#loadDB()
+    await this.loadDB()
     this.#view.configureOnSearchInput(
-      this.#onSearchInput.bind(this)
+      this.onSearchInput.bind(this)
     )
 
     this.addCards("")
