@@ -1,54 +1,56 @@
-import Controller from "./controller.js"
-import Service from "./service.js"
-import View from "./view.js"
-import Camera from "../../../lib/shared/camera.js"
-import { supportsWorkerType } from "../../../lib/shared/utils.js"
-
-const [rootPath] = window.location.href.split('/pages/')
+import Controller from './controller.js'
+import Service from './service.js'
+import View from './view.js'
+import Camera from '../../../lib/shared/camera.js'
+import { supportsWorkerType } from '../../../lib/shared/utils.js'
 
 async function getWorker() {
   if (supportsWorkerType()) {
-    console.log('Camera support enable');
+    console.log('initializing esm workers')
     const worker = new Worker('./src/worker.js', { type: 'module' })
-    return worker;
+    return worker
   }
 
-  console.warn(`Your browser doesn't support esm modules on webworkers!`);
-
-  await import("https://unpkg.com/@tensorflow/tfjs-core@2.4.0/dist/tf-core.js")
-  await import("https://unpkg.com/@tensorflow/tfjs-converter@2.4.0/dist/tf-converter.js")
-  await import("https://unpkg.com/@tensorflow/tfjs-backend-webgl@2.4.0/dist/tf-backend-webgl.js")
-  await import("https://unpkg.com/@tensorflow-models/face-landmarks-detection@0.0.1/dist/face-landmarks-detection.js")
-
-  console.log('using worker mock intead!');
-
+  console.warn(`Your browser doesn't support esm modules on webworkers!`)
+  console.warn(`Importing libraries ...`)
+  await import('https://unpkg.com/@tensorflow/tfjs-core@2.4.0/dist/tf-core.js')
+  await import('https://unpkg.com/@tensorflow/tfjs-converter@2.4.0/dist/tf-converter.js')
+  await import('https://unpkg.com/@tensorflow/tfjs-backend-webgl@2.4.0/dist/tf-backend-webgl.js')
+  await import('https://unpkg.com/@tensorflow-models/face-landmarks-detection@0.0.1/dist/face-landmarks-detection.js')
+  console.warn(`using worker mock instead ...`)
   const service = new Service({
-    faceLandmarksDetection: window.faceLandmarksDetection
+    faceLandmarksDetection: window.faceLandmarksDetection,
   })
   const workerMock = {
     async postMessage(video) {
-      const blinked = await service.handBlinked(video)
-      if (!blinked) return;
+      const blinked = await service.hadBlinked(video)
+      if (!blinked) return
       workerMock.onmessage({ data: { blinked } })
     },
-    onmessage(msg) { }
+
+    onmessage(msg) { },
   }
 
+  console.log('loading tf model')
   await service.loadModel()
-  setTimeout(() => worker.onmessage({ data: 'READY' }), 2000)
-  return workerMock;
-}
-const worker = await getWorker();
-const camera = await Camera.init();
+  console.log('tf model loaded')
+  setTimeout(() => worker.onmessage({ data: 'READY' }), 500)
 
+  return workerMock
+}
+
+const worker = await getWorker()
+const camera = await Camera.init()
+const [rootPath] = window.location.href.split('/pages/')
 const factory = {
-  async initalize() {
+  async initialize() {
     return Controller.initialize({
-      view: new View({}),
+      view: new View(),
       camera,
-      worker
+      worker,
+      videoUrl: `${rootPath}/assets/video.mp4`,
     })
-  }
+  },
 }
 
 export default factory

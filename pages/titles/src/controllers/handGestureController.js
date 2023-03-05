@@ -18,25 +18,14 @@ export default class HandGestureController {
         this.#camera = camera
     }
 
-    static async initialize(deps) {
-        const controller = new HandGestureController(deps)
-        return controller.init()
-    }
-
     async init() {
         return this.#loop()
     }
 
-    async #loop() {
-        await this.#service.initializeDetector()
-        await this.#estimateHands()
-        this.#view.loop(this.#loop.bind(this))
-    }
-
     #scrollPage(direction) {
         const pixelsPerScroll = 90
-        this.#lastPosition.direction = direction
 
+        this.#lastPosition.direction = direction
         if (this.#lastPosition.direction === direction) {
             this.#lastPosition.y =
                 direction === 'scroll-down'
@@ -49,29 +38,34 @@ export default class HandGestureController {
 
     async #estimateHands() {
         try {
-
             const hands = await this.#service.estimateHands(this.#camera.video)
             this.#view.clearCanvas()
-
             if (hands?.length) this.#view.drawResults(hands)
 
             for await (const { event, x, y } of this.#service.detectGestures(hands)) {
-
                 if (event.includes('click')) {
                     if (!clickShouldRun()) continue
                     this.#view.clickOnElement(x, y)
                     continue
                 }
-
                 if (event.includes('scroll')) {
                     if (!scrollShouldRun()) continue
                     this.#scrollPage(event)
                 }
             }
         } catch (error) {
-            console.error('deu ruim**', error)
+            console.error('Ops!', error)
         }
     }
 
+    async #loop() {
+        await this.#service.initializeDetector()
+        await this.#estimateHands()
+        this.#view.loop(this.#loop.bind(this))
+    }
 
+    static async initialize(deps) {
+        const controller = new HandGestureController(deps)
+        return controller.init()
+    }
 }

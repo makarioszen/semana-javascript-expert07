@@ -1,2 +1,2 @@
 import factory from "./factory.js";
-await factory.initalize()
+await factory.initialize()

@@ -1,18 +1,14 @@
 export default class Controller {
     #view
-    #worker
-    #blinkCounter = {
-        left: 0,
-        right: 0,
-        both: 0
-    }
     #camera
-
-
-    constructor({ view, worker, camera }) {
+    #worker
+    #blinks = { right: 0, left: 0, both: 0 }
+    constructor({ view, worker, camera, videoUrl }) {
         this.#view = view
+        this.#view.configureOnBtnClick(this.onBtnStart.bind(this))
         this.#camera = camera
         this.#worker = this.#configureWorker(worker)
+        this.#view.setVideoSrc(videoUrl)
     }
 
     static async initialize(deps) {
@@ -24,56 +20,54 @@ export default class Controller {
     #configureWorker(worker) {
         let ready = false
         worker.onmessage = ({ data }) => {
-            if ('READY' === data) {
-                this.#view.enableButton()
+            if (data === 'READY') {
+                console.log('worker is ready!')
+                this.#view.enableBtn()
                 ready = true
-                console.log('Camera worker is ready');
-                return;
+                return
             }
-
-            const { blinked } = data
-            if (!blinked) return;
-
-            this.#blinkCounter[blinked]++
-            this.log(`you blinked eye ${blinked}`)
+            const blinked = data.blinked
+            this.#blinks[blinked] += 1
             if (blinked === 'both') {
-                this.#view.togglePlayVideo();
+                this.#view.togglePlayVideo()
             }
         }
+
         return {
             send(msg) {
-                if (!ready) return;
+                if (!ready) return
                 worker.postMessage(msg)
-            }
+            },
         }
-    }
-
-    async init() {
-        console.log('Run Video Player');
-        this.#view.configureOnBtnClick(this.onBtnStart.bind(this))
-    }
-
-    log(text) {
-        const times = `      - blinked times: ${this.#blinkCounter}`
-        this.#view.log(`logger: ${text}`.concat(this.#blinkCounter ? times : ''))
-    }
-
-    onBtnStart() {
-        this.log('initializing detection ...')
-        this.#blinkCounter = {
-            left: 0,
-            right: 0,
-            both: 0
-        }
-        this.loop()
     }
 
     loop() {
         const video = this.#camera.video
         const img = this.#view.getVideoFrame(video)
         this.#worker.send(img)
-        setTimeout(() => this.loop(), 100);
+        this.log('detecting eye blink ...')
+        setTimeout(() => this.loop(), 100)
     }
 
+    async init() {
+        console.log('init!!')
+    }
 
+    log(text) {
+        const times = `    - blinked times - both: ${this.#blinks['both']}, left: ${this.#blinks['left']
+            }, right: ${this.#blinks['right']}`
+        this.#view.log(
+            `status: ${text}`.concat(
+                this.#blinks['both'] || this.#blinks['left'] || this.#blinks['right']
+                    ? times
+                    : ''
+            )
+        )
+    }
+
+    onBtnStart() {
+        this.log('initializing detection ...')
+        this.#blinks = { right: 0, left: 0, both: 0 }
+        this.loop()
+    }
 }

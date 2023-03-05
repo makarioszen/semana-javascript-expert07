@@ -1,6 +1,6 @@
-import { prepareRunChecker } from '../../lib/shared/util.js'
+import { prepareRunChecker } from '../../../lib/shared/utils.js'
 
-const { shouldRun } = prepareRunChecker({ timerDelay: 750 })
+const { shouldRun } = prepareRunChecker({ timerDelay: 500 })
 const EAR_THRESHOLD = 0.27
 
 export default class Service {
@@ -16,7 +16,8 @@ export default class Service {
       { maxFaces: 1 }
     )
   }
-
+  
+  // EAR: Eye Aspect Ratio
   #getEAR(upper, lower) {
     function getEucledianDistance(x1, y1, x2, y2) {
       return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1))
@@ -54,7 +55,7 @@ export default class Service {
       const lowerRight = prediction.annotations.rightEyeUpper0
       const upperRight = prediction.annotations.rightEyeLower0
       const rightEAR = this.#getEAR(upperRight, lowerRight)
-      
+
       const lowerLeft = prediction.annotations.leftEyeUpper0
       const upperLeft = prediction.annotations.leftEyeLower0
       const leftEAR = this.#getEAR(upperLeft, lowerLeft)

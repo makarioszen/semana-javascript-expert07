@@ -2,13 +2,17 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JSExpert Max - BlinkToPlay</title>
   <style>
     video {
       width: 95%;
+      margin: 10px;
+    }
+
+    button {
       margin: 10px;
     }
 
@@ -20,12 +24,13 @@
 
 <body>
   <div class="button-container">
-
-    <button type="button" disabled id="init">Initialize Blink Recognition</button>
-    <div id="status"></div>
+    <button type="button" disabled id="init">
+      Initialize Blink Recognition
+    </button>
+    <output id="status"></output>
   </div>
-  <video id="video" src="/assets/video.mp4" controls></video>
-  <script type="module" src="./src/index.js"></script>
+  <video id="video" controls></video>
+  <script src="./src/index.js" type="module"></script>
 </body>
 
 </html>
